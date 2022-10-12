@@ -1,0 +1,29 @@
+From: "Dr. Tobias Quathamer" <toddy@debian.org>
+Date: Sat, 6 Feb 2016 01:19:16 +0100
+Subject: fclose.3
+
+---
+ man3/fclose.3 | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/man3/fclose.3 b/man3/fclose.3
+index 970771f..c8b4234 100644
+--- a/man3/fclose.3
++++ b/man3/fclose.3
+@@ -56,6 +56,16 @@ function flushes the stream pointed to by
+ (writing any buffered output data using
+ .BR fflush (3))
+ and closes the underlying file descriptor.
++.\" Reviewed by upstream and rejected, May 2012, Debian#67239
++.PP
++The behaviour of
++.BR fclose ()
++is undefined if the
++.I stream
++parameter is an illegal pointer, or is a descriptor already passed
++to a previous invocation of
++.BR fclose ().
++.\" End of patch
+ .SH RETURN VALUE
+ Upon successful completion, 0 is returned.
+ Otherwise,

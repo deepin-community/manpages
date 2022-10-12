@@ -1,0 +1,24 @@
+From: "Dr. Tobias Quathamer" <toddy@debian.org>
+Date: Sat, 6 Feb 2016 01:24:49 +0100
+Subject: nsswitch.conf.5
+
+---
+ man5/nsswitch.conf.5 | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/man5/nsswitch.conf.5 b/man5/nsswitch.conf.5
+index f2eeb24..b53689d 100644
+--- a/man5/nsswitch.conf.5
++++ b/man5/nsswitch.conf.5
+@@ -283,6 +283,11 @@ Include the specified
+ .I user
+ from the NIS passwd/shadow map.
+ .TP
++.BI + user::::::
++Include the specified
++.I user
++from the NIS passwd map, but override with non-empty passwd fields.
++.TP
+ .BI +@ netgroup
+ Include all users in the given
+ .IR netgroup .

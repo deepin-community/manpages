@@ -1,0 +1,35 @@
+From: "Dr. Tobias Quathamer" <toddy@debian.org>
+Date: Sat, 6 Feb 2016 01:25:30 +0100
+Subject: tzfile.5
+
+---
+ man5/tzfile.5 | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/man5/tzfile.5 b/man5/tzfile.5
+index 48f6cad..dbed77c 100644
+--- a/man5/tzfile.5
++++ b/man5/tzfile.5
+@@ -184,6 +184,22 @@ if either
+ .I tzh_timecnt
+ is zero or the time argument is less than the first transition time recorded
+ in the file.
++.\" http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=122906#47
++.\" Reviewed by upstream and rejected, May 2012
++.SH NOTES
++This manual page documents
++.I <tzfile.h>
++in the glibc source archive, see
++.IR timezone/tzfile.h .
++
++It seems that timezone uses
++.B tzfile
++internally, but glibc refuses to expose it to userspace.  This is most
++likely because the standardised functions are more useful and
++portable, and actually documented by glibc.  It may only be in glibc
++just to support the non-glibc-maintained timezone data (which is
++maintained by some other entity).
++.\" End of patch 
+ .SS Version 2 format
+ For version-2-format timezone files,
+ the above header and data are followed by a second header and data,

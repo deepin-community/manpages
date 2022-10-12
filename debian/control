@@ -1,0 +1,46 @@
+Source: manpages
+Section: doc
+Maintainer: Dr. Tobias Quathamer <toddy@debian.org>
+Priority: standard
+Build-Depends: debhelper-compat (= 12)
+Standards-Version: 4.5.0
+Vcs-Browser: https://salsa.debian.org/debian/manpages
+Vcs-Git: https://salsa.debian.org/debian/manpages.git
+Homepage: https://www.kernel.org/doc/man-pages/
+
+Package: manpages
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}
+Suggests: man-browser
+Replaces: manpages-dev (<< 5.09-2), attr (<< 1:2.4.47-3), keyutils (<< 1.6-1)
+Breaks: manpages-dev (<< 5.09-2), attr (<< 1:2.4.47-3), keyutils (<< 1.6-1)
+Description: Manual pages about using a GNU/Linux system
+ This package contains GNU/Linux manual pages for these sections:
+  4 = Devices (e.g. hd, sd).
+  5 = File formats and protocols, syntaxes of several system
+      files (e.g. wtmp, /etc/passwd, nfs).
+  7 = Conventions and standards, macro packages, etc.
+      (e.g. nroff, ascii).
+ .
+ Sections 1, 6 and 8 are provided by the respective applications. This
+ package only includes the intro man page describing the section.
+ .
+ The man pages describe syntaxes of several system files.
+
+Package: manpages-dev
+Architecture: all
+Multi-Arch: foreign
+Depends: manpages, ${misc:Depends}
+Suggests: man-browser
+Replaces: libbsd-dev (<< 0.8.4-1),
+ libattr1-dev (<< 1:2.4.47-3)
+Breaks: manpages (<< 5.09-2), libbsd-dev (<< 0.8.4-1),
+ libattr1-dev (<< 1:2.4.47-3)
+Priority: optional
+Description: Manual pages about using GNU/Linux for development
+ These man pages describe the Linux programming interface, including
+ these two sections:
+  2 = Linux system calls.
+  3 = Library calls (note that a more comprehensive source of information
+      may be found in the glibc-doc and glibc-doc-reference packages).

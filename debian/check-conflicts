@@ -1,0 +1,41 @@
+#!/bin/sh
+
+echo "Getting the contents file from sid for amd64 ..."
+wget --quiet https://deb.debian.org/debian/dists/sid/main/Contents-amd64.gz
+
+echo "Decompressing the contents file ..."
+gzip -d Contents-amd64.gz
+
+echo "Filtering out only manpages ..."
+grep "^usr/share/man/man*" Contents-amd64 > only-manpages.txt
+rm -f Contents-amd64
+
+echo "Searching for conflicting manpages ..."
+for manpage in man*/* ; do
+	grep "usr/share/man/$manpage.gz" only-manpages.txt |
+	grep -v "[^,]doc/manpages-dev$" |
+	grep -v "[^,]doc/manpages$"
+done > manpages-in-other-packages.txt
+LC_ALL=C sort -o manpages-in-other-packages.txt manpages-in-other-packages.txt
+rm -f only-manpages.txt
+
+echo "Refreshing debian/rules ..."
+for manpage in `cut -d" " -f1 manpages-in-other-packages.txt`; do
+	section=`basename $manpage .gz | sed -e "s/.*\.//"`
+	if [ $section -ge 2 -a $section -le 3 ]; then
+		debian_path="debian/manpages-dev"
+	else
+		debian_path="debian/manpages"
+	fi
+	debian_path=$debian_path/`dirname $manpage`
+	debian_path=$debian_path/`basename $manpage .gz`
+	echo "\t"rm -f $debian_path
+done > rules-snippet
+rm -f manpages-in-other-packages.txt
+
+lead="^\t# Start of automatically added files by debian\/check-conflicts$"
+tail="^\t# End of automatically added files by debian\/check-conflicts$"
+sed -i -e "/$lead/,/$tail/{ /$lead/{p; r rules-snippet
+	}; /$tail/p; d }" debian/rules
+
+rm -f rules-snippet

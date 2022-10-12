@@ -1,0 +1,12 @@
+0001-fclose.3.patch
+0002-getpwent.3.patch
+0003-getpwnam.3.patch
+0004-nl_langinfo.3.patch
+0005-console_codes.4.patch
+0006-dir_colors.5.patch
+0007-motd.5.patch
+0008-nsswitch.conf.5.patch
+0009-resolv.conf.5.patch
+0010-tzfile.5.patch
+0011-man.7.patch
+0013-rtnetlink.7.patch

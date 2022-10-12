@@ -1,0 +1,20 @@
+From: "Dr. Tobias Quathamer" <toddy@debian.org>
+Date: Sat, 6 Feb 2016 01:27:54 +0100
+Subject: man.7
+
+---
+ man7/man.7 | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/man7/man.7 b/man7/man.7
+index 7e698c6..6b7b924 100644
+--- a/man7/man.7
++++ b/man7/man.7
+@@ -515,6 +515,7 @@ is not implemented.
+ .BR lexgrog (1),
+ .BR man (1),
+ .BR man2html (1),
++.BR groff_mdoc (7),
+ .BR whatis (1),
+ .BR groff_man (7),
+ .BR groff_www (7),

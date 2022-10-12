@@ -1,0 +1,30 @@
+From: "Dr. Tobias Quathamer" <toddy@debian.org>
+Date: Sat, 6 Feb 2016 01:22:32 +0100
+Subject: dir_colors.5
+
+---
+ man5/dir_colors.5 | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/man5/dir_colors.5 b/man5/dir_colors.5
+index 057436c..43028cc 100644
+--- a/man5/dir_colors.5
++++ b/man5/dir_colors.5
+@@ -377,9 +377,17 @@ hash mark as the first character.
+ .SH FILES
+ .TP
+ .I /etc/DIR_COLORS
++.\" Rejected upstream
++(Slackware, SuSE and RedHat only; ignored by GNU
++.BR dircolors (1)
++and thus Debian.)
+ System-wide configuration file.
+ .TP
+ .I \(ti/.dir_colors
++.\" Rejected upstream
++(Slackware, SuSE and RedHat only; ignored by GNU
++.BR dircolors (1)
++and thus Debian.)
+ Per-user configuration file.
+ .PP
+ This page describes the

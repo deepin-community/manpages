@@ -1,0 +1,21 @@
+From: "Dr. Tobias Quathamer" <toddy@debian.org>
+Date: Sat, 6 Feb 2016 01:28:20 +0100
+Subject: rtnetlink.7
+
+---
+ man7/rtnetlink.7 | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/man7/rtnetlink.7 b/man7/rtnetlink.7
+index 41c6143..69cafa3 100644
+--- a/man7/rtnetlink.7
++++ b/man7/rtnetlink.7
+@@ -17,6 +17,8 @@ rtnetlink \- Linux IPv4 routing socket
+ .SH SYNOPSIS
+ .B #include <asm/types.h>
+ .br
++.B #include <linux/if_link.h>
++.br
+ .B #include <linux/netlink.h>
+ .br
+ .B #include <linux/rtnetlink.h>

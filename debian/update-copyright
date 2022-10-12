@@ -1,0 +1,235 @@
+#!/usr/bin/python3
+#
+# Copyright © 2016 Dr. Tobias Quathamer <toddy@debian.org>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import re
+import sys
+import textwrap
+from pathlib import Path
+
+# The standard short names in Debian are defined here:
+# https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+
+license_information = [
+	{
+		'shortname': 'BSD-3-clause',
+		'filename':  'BSD-3-clause-UCB',
+		'upstream_names': ['BSD_3_CLAUSE_UCB'],
+	},
+	{
+		'shortname': 'BSD-4-clause',
+		'filename':  'BSD-4-clause-UCB',
+		'upstream_names': ['BSD_4_CLAUSE_UCB', 'BSD_ONELINE_CDROM'],
+	},
+	{
+		'shortname': 'Expat',
+		'filename':  'Expat',
+		'upstream_names': ['PERMISSIVE_MISC', 'MIT'],
+	},
+	{
+		# This shortname is not defined by the standard.
+		'shortname': 'freely-redistributable',
+		'filename':  'freely-redistributable',
+		'upstream_names': ['FREELY_REDISTRIBUTABLE'],
+	},
+	{
+		'shortname': 'GPL-2',
+		'filename':  'GPL-2',
+		'upstream_names': ['GPLv2_MISC', 'GPLv2_ONELINE'],
+	},
+	{
+		'shortname': 'GPL-2+',
+		'filename':  'GPL-2+',
+		'upstream_names': ['GPL_NOVERSION_ONELINE', 'GPLv2+',
+		                   'GPLv2+_DOC_FULL', 'GPLv2+_DOC_MISC',
+		                   'GPLv2+_DOC_ONEPARA', 'GPLv2+_SW_3_PARA',
+		                   'GPLv2+_SW_ONEPARA'],
+	},
+	{
+		# This shortname is not defined by the standard.
+		'shortname': 'henry-spencer-regex',
+		'filename':  'henry-spencer-regex',
+		'upstream_names': ['MISC'],
+	},
+	{
+		# This shortname is not defined by the standard.
+		'shortname': 'LDPv1',
+		'filename':  'LDPv1',
+		'upstream_names': ['LDPv1'],
+	},
+	{
+		'shortname': 'public-domain',
+		'filename':  'public-domain',
+		'upstream_names': ['PUBLIC_DOMAIN'],
+	},
+	{
+		# This shortname is not defined by the standard.
+		'shortname': 'verbatim',
+		'filename':  'verbatim',
+		'upstream_names': ['VERBATIM', 'VERBATIM_ONE_PARA',
+		                   'VERBATIM_TWO_PARA', 'VERBATIM_PROF'],
+	},
+]
+
+licenses_with_manpages = {}
+symlinks = {}
+
+def get_license_shortname(name):
+	"""Gets the Debian shortname for the name supplied by upstream.
+	
+	Includes a check that upstream's names are only assigned
+	to one shortname.
+	"""
+	shortname = ""
+	already_found = False
+	for info in license_information:
+		if name in info['upstream_names']:
+			if not already_found:
+				shortname = info['shortname']
+				already_found = True
+			else:
+				sys.exit("Fatal error: Upstream license name defined multiple times: " + name)
+	return shortname
+
+def add_manpage_to_shortname(manpage, copyright_holders, licenses):
+	# Ensure a string for the filename
+	filename = str(manpage)
+	# Strip the leading "../"
+	filename = filename[3:len(filename)]
+	# Common case: only one license for the manpage, so
+	# the shortname is just e.g. "GPL-2+"
+	shortname = " and ".join(sorted(licenses))
+	if shortname not in licenses_with_manpages:
+		licenses_with_manpages[shortname] = {'files': [filename], 'copyright': copyright_holders}
+	else:
+		licenses_with_manpages[shortname]['files'].append(filename)
+		# Do not add same lines twice
+		existing_copyright_holders = licenses_with_manpages[shortname]['copyright']
+		joined_copyright_holders = list(set(existing_copyright_holders + copyright_holders))
+		licenses_with_manpages[shortname]['copyright'] = joined_copyright_holders
+
+def get_copyright_stanza(shortname, file_info):
+	stanza = ""
+	# Collect files and symlinks into a common list
+	all_files = file_info['files']
+	for file in file_info['files']:
+		if file in symlinks:
+			all_files = all_files + symlinks[file]
+	# Join the files into a whitespace separated list,
+	# at most 76 characters long
+	files = " ".join(sorted(all_files))
+	# The wrap is 69 + 7 (length of "Files: ") = 76
+	files = textwrap.wrap(files, width=69, break_long_words=False, break_on_hyphens=False)
+	files = "\n       ".join(files)
+	# Now format the copyright holders
+	copyright = "\n           ".join(sorted(file_info['copyright']))
+	# An empty field is an error, so ensure a value
+	if len(copyright) == 0:
+		copyright = "(could not be detected automatically)"
+	# Finally, create the stanza
+	stanza += "Files: " + files
+	stanza += "\nCopyright: " + copyright
+	stanza += "\nLicense: " + shortname + "\n\n"
+	return stanza
+
+def get_license_text(shortname):
+	"""Gets the text for the Debian license shortname."""
+	text = ""
+	for info in license_information:
+		if info['shortname'] == shortname:
+			text += "License: " + shortname + "\n"
+			with open("licenses/" + info['filename']) as licensefile:
+				for line in licensefile:
+					text += " " + line
+			return text
+
+p = Path("..")
+for manpage in p.glob("man?/*"):
+	with manpage.open() as file:
+		licenses = []
+		copyright_holders = []
+		manpage_is_symlink = False
+		for line in file:
+			# Do not create copyright stanzas for symlink files
+			# but add them to a symlink list
+			symlink = re.search(r"^\.so (.*)", line)
+			if symlink:
+				manpage_is_symlink = True
+				# Ensure a string for the filename
+				linkname = str(manpage)
+				# Strip the leading "../"
+				linkname = linkname[3:len(linkname)]
+				filename = symlink.group(1)
+				if filename in symlinks:
+					symlinks[filename].append(linkname)
+				else:
+					symlinks[filename] = [linkname]
+				break
+			# Only parse the header, so stop after seeing ".TH"
+			if re.search(r"^\.TH", line):
+				break
+			# Extract all copyright holders
+			copyright = re.search(r"^\.\\\".*?Copyright (.*)", line)
+			if copyright:
+				copyright_holders.append(copyright.group(1))
+			# Match the beginning of the license
+			license_start = re.search(r"^\.\\\" %%%LICENSE_START\((.*)\)", line)
+			if license_start:
+				license_name = license_start.group(1)
+				license_short_name = get_license_shortname(license_name)
+				if not license_short_name:
+					sys.exit("Fatal error: Upstream license name not known: " + license_name)
+				licenses.append(license_short_name)
+		if not manpage_is_symlink:
+			add_manpage_to_shortname(manpage, copyright_holders, licenses)
+
+# Flatten the symlinks by detecting and removing
+# a symlink which points to another symlink.
+for link_to_test in symlinks:
+	# Now cycle through all symlink entries
+	for link in symlinks:
+		if link_to_test in symlinks[link]:
+			symlinks[link] = symlinks[link] + symlinks[link_to_test]
+
+# Make sorting of licenses deterministic
+stanzas = ""
+license_texts = []
+for shortname in sorted(licenses_with_manpages):
+	stanzas += get_copyright_stanza(shortname, licenses_with_manpages[shortname])
+	text = get_license_text(shortname)
+	if text:
+		license_texts.append(text)
+
+# Read in the first lines of copyright, without
+# the automatically generated parts. Stop after
+# the third occurence of "License".
+manual_lines = ""
+license_line_count = 0
+with open("copyright") as copyright_file:
+	for line in copyright_file:
+		manual_lines += line
+		if re.search(r"^License:", line):
+			license_line_count += 1
+			if license_line_count == 3:
+				# Add a final newline for separation
+				manual_lines += "\n"
+				break
+
+# Open the file for output
+with open("copyright", "w") as copyright_file:
+	copyright_file.write(manual_lines)
+	copyright_file.write(stanzas)
+	copyright_file.write("\n".join(license_texts))
