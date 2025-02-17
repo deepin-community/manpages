@@ -1,2 +1,2 @@
 # This manpage is dual-licensed
-manpages source: license-problem-non-free-RFC man7/uri.7
+manpages source: license-problem-non-free-RFC *man7/uri.7*

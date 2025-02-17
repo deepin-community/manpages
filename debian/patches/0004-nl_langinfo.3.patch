@@ -3,19 +3,19 @@ Date: Sat, 6 Feb 2016 01:21:35 +0100
 Subject: nl_langinfo.3
 
 ---
- man3/nl_langinfo.3 | 2 ++
+ man/man3/nl_langinfo.3 | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/man3/nl_langinfo.3 b/man3/nl_langinfo.3
-index 21cbacd..e2a68a9 100644
---- a/man3/nl_langinfo.3
-+++ b/man3/nl_langinfo.3
-@@ -61,6 +61,8 @@ which was previously created by
- .BR newlocale (1).
+diff --git a/man/man3/nl_langinfo.3 b/man/man3/nl_langinfo.3
+index 806c3df..e014c69 100644
+--- a/man/man3/nl_langinfo.3
++++ b/man/man3/nl_langinfo.3
+@@ -56,6 +56,8 @@ which was previously created by
+ .BR newlocale (3).
  Individual and additional elements of the locale categories can
  be queried.
 +.BR setlocale (3)
 +needs to be executed with proper arguments before.
- .PP
+ .P
  Examples for the locale elements that can be specified in \fIitem\fP
  using the constants defined in \fI<langinfo.h>\fP are:

@@ -12,7 +12,7 @@
 #       .BR name ()
 #
 # This script changes instances to the latter format.
-# It does not fix all such instances: some will have to be 
+# It does not fix all such instances: some will have to be
 # done manually.
 #
 # Use the "-n" option for a dry run, in order to see what would be
@@ -25,7 +25,7 @@
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -56,7 +56,7 @@ done
 
 shift $(( $OPTIND - 1 ))
 
-# Only process files with > 1 line -- single-line files are link files 
+# Only process files with > 1 line -- single-line files are link files
 
 for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
     grep -v '^total'); do

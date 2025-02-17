@@ -1,12 +1,3 @@
-The following notes refer to Michael Kerrisk as upstream maintainer.
+If you are willing to help with the upstream work on the Linux manual pages, please check out the following link:
 
- . Small patches are best sent inline in a mail
-
- . Use a single mail for each addition and don't add more than one
-   update/improvement/addition into one mail.  (Apparently Michael
-   uses an mbox as todo list as well)
-
- . Use diff -u for patches (should be default for all projects anyway)
-
- . For users: it's best to go through the Debian maintainer to clean
-   up the patch before it is sent upstream.
+https://www.kernel.org/doc/man-pages/contributing.html

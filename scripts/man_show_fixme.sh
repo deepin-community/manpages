@@ -7,7 +7,7 @@ for f in $*; do
     cat $f | awk '
         /^\.\\" *FIXME/ {
             if ($0 ~ /.*FIXME *\..*/) {
-		# FIXMES of the form "FIXME ." are "private" and 
+		# FIXMES of the form "FIXME ." are "private" and
 		# ignored by this script
             } else {
                 sub("FIXME[: ]*", "")

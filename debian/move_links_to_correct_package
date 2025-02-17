@@ -10,58 +10,20 @@
 # to debian/control, the file needs to be added
 # manually to the list of known files.
 check_breaks_replaces () {
-  known_files="man3/FILE.3
-    man3/aiocb.3
-    man3/clock_t.3
-    man3/clockid_t.3
-    man3/dev_t.3
-    man3/div_t.3
-    man3/double_t.3
-    man3/fenv_t.3
-    man3/fexcept_t.3
-    man3/float_t.3
-    man3/gid_t.3
-    man3/id_t.3
-    man3/imaxdiv_t.3
-    man3/int16_t.3
-    man3/int32_t.3
-    man3/int64_t.3
-    man3/int8_t.3
-    man3/intN_t.3
-    man3/intmax_t.3
-    man3/intptr_t.3
-    man3/lconv.3
-    man3/ldiv_t.3
-    man3/lldiv_t.3
-    man3/off_t.3
-    man3/pid_t.3
-    man3/ptrdiff_t.3
+  known_files="
     man3/queue.3
-    man3/regex_t.3
-    man3/regmatch_t.3
-    man3/regoff_t.3
-    man3/siginfo_t.3
-    man3/sigset_t.3
-    man3/sigval.3
-    man3/size_t.3
-    man3/ssize_t.3
-    man3/suseconds_t.3
-    man3/time_t.3
-    man3/timer_t.3
-    man3/timespec.3
-    man3/timeval.3
-    man3/uid_t.3
-    man3/uint16_t.3
-    man3/uint32_t.3
-    man3/uint64_t.3
-    man3/uint8_t.3
-    man3/uintN_t.3
-    man3/uintmax_t.3
-    man3/uintptr_t.3
-    man3/va_list.3
-    man3/void.3
+    man3/S_ISBLK.3
+    man3/S_ISCHR.3
+    man3/S_ISDIR.3
+    man3/S_ISFIFO.3
+    man3/S_ISLNK.3
+    man3/S_ISREG.3
+    man3/S_ISSOCK.3
+    man3type/siginfo_t.3type
+    man3type/sigset_t.3type
     man4/console_ioctl.4
-    man4/tty_ioctl.4"
+    man4/tty_ioctl.4
+    man7/sigevent.7"
   file_is_known="no"
   for file in $known_files; do
     if [ "x$1" = "x$file" ]; then
@@ -78,28 +40,31 @@ check_breaks_replaces () {
   fi
 }
 
-for src_section in man?; do
+for src_section in man*; do
+	#echo "$orig_section **********************************************************************************************************************"
+	src_section_strip=$(echo $src_section | cut -c 1-4)
   for file in $src_section/*; do
     destination=`grep "^\.so " $file`
+    file_strip=$(echo $file | xargs basename)
     if [ -n "$destination" ]; then
       dest_section=`echo "$destination" | sed -e "s/.*\(man.\).*/\1/"`
       if [ "$dest_section" != "$src_section" ]; then
-        # The destination is in the package manpages
-        if [ "$dest_section" != "man2" -a "$dest_section" != "man3" ]; then
+	      # The destination is in the package manpages
+        if [ "$dest_section" != "man2" -a "$dest_section" != "man2const" -a "$dest_section" != "man2type" -a "$dest_section" != "man3" -a "$dest_section" != "man3type" -a "$dest_section" != "man3const" -a "$dest_section" != "man3head" ]; then
           # Ensure the source link is not in package manpages-dev
-          if [ "$src_section" = "man2" -o "$src_section" = "man3" ]; then
+          if [ "$src_section" = "man2" -o "$src_section" = "man2const" -o "$src_section" = "man2type" -o "$src_section" = "man3" -o "$src_section" = "man3type" -o "$src_section" = "man3const" -o "$src_section" = "man3head" ]; then
             echo "Moving $file to package manpages."
-            mkdir -p "debian/manpages/usr/share/man/$src_section"
-            mv "debian/manpages-dev/usr/share/man/$file" "debian/manpages/usr/share/man/$file"
+            mkdir -p "debian/manpages/usr/share/man/$src_section_strip"
+            mv "debian/manpages-dev/usr/share/man/$src_section_strip/$file_strip" "debian/manpages/usr/share/man/$src_section_strip/$file_strip"
             check_breaks_replaces "$file"
           fi
         else
           # The destination is in the package manpages-dev
           # Ensure the source link is not in package manpages
-          if [ "$src_section" != "man2" -a "$src_section" != "man3" ]; then
+          if [ "$src_section" != "man2" -a "$src_section" != "man2const" -a "$src_section" != "man2type" -a "$src_section" != "man3" -a "$src_section" != "man3type" -a "$src_section" != "man3const" -a "$src_section" != "man3head" ]; then
             echo "Moving $file to package manpages-dev."
-            mkdir -p "debian/manpages-dev/usr/share/man/$src_section"
-            mv "debian/manpages/usr/share/man/$file" "debian/manpages-dev/usr/share/man/$file"
+            mkdir -p "debian/manpages-dev/usr/share/man/$src_section_strip"
+            mv "debian/manpages/usr/share/man/$src_section_strip/$file_strip" "debian/manpages-dev/usr/share/man/$src_section_strip/$file_strip"
             check_breaks_replaces "$file"
           fi
         fi

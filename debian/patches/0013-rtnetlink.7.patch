@@ -3,19 +3,18 @@ Date: Sat, 6 Feb 2016 01:28:20 +0100
 Subject: rtnetlink.7
 
 ---
- man7/rtnetlink.7 | 2 ++
- 1 file changed, 2 insertions(+)
+ man/man7/rtnetlink.7 | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/man7/rtnetlink.7 b/man7/rtnetlink.7
-index 41c6143..69cafa3 100644
---- a/man7/rtnetlink.7
-+++ b/man7/rtnetlink.7
-@@ -17,6 +17,8 @@ rtnetlink \- Linux IPv4 routing socket
+diff --git a/man/man7/rtnetlink.7 b/man/man7/rtnetlink.7
+index ce4cf35..38045af 100644
+--- a/man/man7/rtnetlink.7
++++ b/man/man7/rtnetlink.7
+@@ -13,6 +13,7 @@ rtnetlink \- Linux routing socket
  .SH SYNOPSIS
+ .nf
  .B #include <asm/types.h>
- .br
 +.B #include <linux/if_link.h>
-+.br
  .B #include <linux/netlink.h>
- .br
  .B #include <linux/rtnetlink.h>
+ .B #include <sys/socket.h>
