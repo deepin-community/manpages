@@ -1,0 +1,89 @@
+From 43cf3a47245d49ca9269ce0e7afb48d242cbe20e Mon Sep 17 00:00:00 2001
+From: Chen Linxuan <chenlinxuan@uniontech.com>
+Date: Sun, 2 Feb 2025 21:57:33 +0800
+Subject: [PATCH] man/man2/mkdir.2: ERRORS: Add EOVERFLOW
+
+mkdir(2) and mkdirat(2) might set errno to EOVERFLOW when UID or GID
+mapping has not been configured.
+
+Here's a small program that shows this behavior:
+
+        #define _GNU_SOURCE
+        #include <err.h>
+        #include <sched.h>
+        #include <stdlib.h>
+        #include <sys/mman.h>
+        #include <sys/mount.h>
+        #include <sys/stat.h>
+        #include <sys/wait.h>
+        #include <unistd.h>
+
+        static int
+	childFunc(void *_)
+        {
+                if (mount("tmpfs", "/tmp", "tmpfs", 0, NULL))
+                        err(EXIT_FAILURE, "mount");
+
+                if (mkdir("/tmp/test", 0755) == -1)
+                        err(EXIT_FAILURE, "mkdir");
+
+                return 0;
+        }
+
+        #define STACK_SIZE (1024 * 1024)
+
+        int
+	main(void)
+        {
+                char   *stack; /* Start of stack buffer */
+                char   *stackTop; /* End of stack buffer */
+                pid_t  pid;
+
+                stack = mmap(NULL, STACK_SIZE, PROT_READ | PROT_WRITE,
+                             MAP_PRIVATE | MAP_ANONYMOUS | MAP_STACK,
+                             -1, 0);
+                if (stack == MAP_FAILED)
+                        err(EXIT_FAILURE, "mmap");
+
+                stackTop = stack + STACK_SIZE;
+
+                pid = clone(childFunc, stackTop, CLONE_NEWUSER |
+                            CLONE_NEWNS | SIGCHLD, NULL);
+                if (munmap(stack, STACK_SIZE) == -1)
+                        err(EXIT_FAILURE, "munmap");
+                if (pid == -1)
+                        err(EXIT_FAILURE, "clone");
+
+                if (waitpid(pid, NULL, 0) == -1)
+                        err(EXIT_FAILURE, "waitpid");
+
+                exit(EXIT_SUCCESS);
+        }
+
+Link: <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=036d523641c66bef713042894a17f4335f199e49>
+Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
+Message-ID: <F22A2B1500170B63+20250202135733.11800-1-chenlinxuan@uniontech.com>
+[alx: wfix]
+Signed-off-by: Alejandro Colomar <alx@kernel.org>
+---
+ man/man2/mkdir.2 | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/man/man2/mkdir.2 b/man/man2/mkdir.2
+index 132195f..61b9152 100644
+--- a/man/man2/mkdir.2
++++ b/man/man2/mkdir.2
+@@ -203,6 +203,10 @@ does not support the creation of directories.
+ .B EROFS
+ .I pathname
+ refers to a file on a read-only filesystem.
++.B EOVERFLOW
++UID or GID mappings (see
++.BR user_namespaces (7))
++have not been configured.
+ .SH VERSIONS
+ Under Linux, apart from the permission bits, the
+ .B S_ISVTX
+-- 
+2.47.2
+

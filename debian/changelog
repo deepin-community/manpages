@@ -1,3 +1,11 @@
+manpages (6.9.1-1deepin1) unstable; urgency=medium
+
+  * Add new patch 0017-man-man2-mkdir.2-ERRORS-Add-EOVERFLOW.patch
+    - Link: https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/commit/?id=2904e040ded291a898aa5e74b361d12ec90d5a2d
+    - Reason: It is authored by Chen Linxuan <chenlinxuan@uniontech.com>
+
+ -- WangYuli <wangyuli@uniontech.com>  Mon, 17 Feb 2025 20:27:13 +0800
+
 manpages (6.9.1-1) unstable; urgency=medium
 
   * New upstream version 6.9.1
