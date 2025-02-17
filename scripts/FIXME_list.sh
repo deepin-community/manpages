@@ -9,7 +9,7 @@
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -23,7 +23,7 @@
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -40,10 +40,10 @@ while getopts "a" optname; do
         # Even show FIXMEs that aren't generally interesting.  (Typically
 	# these FIXMEs are notes to the maintainer to reverify something
 	# at a future date.)
-    
-    	show_all="y"    
+
+    	show_all="y"
         ;;
-    
+
     *)  echo "Unknown option: $OPTARG"
 	exit 1
 	;;
@@ -64,15 +64,15 @@ for dir in "$@"; do
     do
         cat "$page" | awk -v SHOW_ALL=$show_all -v PAGE_NAME="$page" \
 	    '
-            BEGIN { 
-	        page_FIXME_cnt = 0; 
+            BEGIN {
+	        page_FIXME_cnt = 0;
 	    }
-    	    
-	    /FIXME/ { 
-    
+
+	    /FIXME/ {
+
                 # /.\" FIXME . / ==> do not display this FIXME, unless
                 # -a command-line option was supplied
-	        
+
 		if ($0 ~ /^\.\\" FIXME \./ )
 		    FIXME_type = "hidden"
 		else if ($0 ~ /^\.\\" FIXME *\?/ )
@@ -85,26 +85,26 @@ for dir in "$@"; do
 		        print PAGE_NAME;
 	            }
 	            page_FIXME_cnt++;
-		    
-	            finished = 0; 
-	            do { 
-	                print $0; 
-		        
-		        # Implicit end of FIXME is end-of-file or a line 
+
+	            finished = 0;
+	            do {
+	                print $0;
+
+		        # Implicit end of FIXME is end-of-file or a line
 		        # that is not a comment
-    
+
 	                if (getline == 0)
 		            finished = 1;
-    
-	                if (!($0 ~ /^.\\"/)) 
+
+	                if (!($0 ~ /^.\\"/))
 		            finished = 1;
-        
+
                         # /.\" .$/ ==> Explicit end of FIXME
-        
-	                if ($0 ~ /^.\\" \.$/) 
+
+	                if ($0 ~ /^.\\" \.$/)
 		            finished = 1;
 	            } while (!finished);
-    
+
 	            print "";
                 }
     	    }

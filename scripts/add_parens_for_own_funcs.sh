@@ -8,13 +8,13 @@
 # The problem is how to determine what is a "function name".
 # The approach this script takes is the following:
 #
-#   For each manual page named in the command line that contains 
+#   For each manual page named in the command line that contains
 #           more than one line (i.e., skip man-page link files)
 #       Create a set of names taken from the .SH section of the
-#               page and from grepping all pages for names that 
+#               page and from grepping all pages for names that
 #               have .so links to this page
 #       For each name obtained above
-#           If we can find something that looks like a prototype on 
+#           If we can find something that looks like a prototype on
 #                   the page, then
 #               Try to substitute instances of that name on the page.
 #                   (instances are considered to be words formatted
@@ -37,7 +37,7 @@
 #
 # and take a good look at the output.  In particular, you can scan
 # the output for *possible* problems by looking for the pattern: /^%%%/
-# The script's output should be enough to help you determine if the 
+# The script's output should be enough to help you determine if the
 # problem is real or not.
 #
 # Suggested usage (in this case to fix pages in Section 2):
@@ -48,7 +48,7 @@
 # Use the "-n" option for a dry run, in order to see what would be
 # done, without actually doing it.
 #
-# (And, yes, there are many ways that this script could probably be 
+# (And, yes, there are many ways that this script could probably be
 # made to work faster...)
 #
 ######################################################################
@@ -58,7 +58,7 @@
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -66,7 +66,7 @@
 # (http://www.gnu.org/licenses/gpl-2.0.html).
 #
 #
-# 
+#
 
 file_base="tmp.$(basename $0)"
 
@@ -96,7 +96,7 @@ done
 
 shift $(( $OPTIND - 1 ))
 
-# Only process files with > 1 line -- single-line files are link files 
+# Only process files with > 1 line -- single-line files are link files
 
 for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
     grep -v '^total'); do
@@ -108,8 +108,8 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
     # be our guesses about function names to look for
 
     sh_nlist=$(cat $page | \
-        awk 'BEGIN { p = 0 } 
-             /^\.SH NAME/     { p = NR } 
+        awk 'BEGIN { p = 0 }
+             /^\.SH NAME/     { p = NR }
 	     /^.SH/ && NR > p { p = 0 }	    # Stop at the next .SH directive
 	     p > 0 && NR > p  { print $0 }  # These are the lines between
 					    # the two .SH directives
@@ -117,8 +117,8 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
     sh_nlist=$(echo $sh_nlist | sed -e 's/ *\\-.*//' -e 's/, */ /g')
     echo "### .SH name list:" $sh_nlist
 
-    # Some pages like msgop.2 don't actually list the function names in 
-    # the .SH section -- but we can try using link pages to give us 
+    # Some pages like msgop.2 don't actually list the function names in
+    # the .SH section -- but we can try using link pages to give us
     # another guess at the right function names to look for
 
     so_nlist=$(grep -l "^\\.so.*/$(echo $page| \
@@ -128,11 +128,11 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
     echo "### .so name list:" $so_nlist
 
     # Combine the two lists, eliminate duplicates
-    
+
     nlist=$(echo $sh_nlist $so_nlist | tr ' ' '\012' | sort -u)
 
     maybechanged=0
-    
+
     cp $page $work_dst_file
     rm -f $matches_for_all_names; # touch $matches_for_all_names
 
@@ -146,7 +146,7 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
         echo "########## trying $rname ##########"
 
 	rm -f $matches_for_this_name
-	
+
         grep "^.BR* $name *$" $page | \
 	    >> $matches_for_this_name
         grep "^.BR $name [^(\"]$" $page | \
@@ -155,7 +155,7 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
 	    >> $matches_for_this_name
         grep '\\fB'"$name"'\\f[PR]$' $page | \
 	    >> $matches_for_this_name
-	
+
 	cat $matches_for_this_name | sed -e 's/^/### MATCH: /'
 	cat $matches_for_this_name >> $matches_for_all_names
 
@@ -163,10 +163,10 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
 	# like a function prototype for this name in the page
 
         if grep -q "$name *(" $page || \
-	    grep -q "$name\\\\f.[\\ ]*(" $page; then 
+	    grep -q "$name\\\\f.[\\ ]*(" $page; then
 
 	    # '.B name$'
-	    # '.BR name [^("]*$      
+	    # '.BR name [^("]*$
 	    # (The use of [^"] in the above eliminates lines
 	    # like: .BR func " and " func
 	    # Those lines better be done manually.)
@@ -211,7 +211,7 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
 
     # If the file was changed, then:
     # show "diff -U" output to user;
-    # and count number of changed lines and compare it with what 
+    # and count number of changed lines and compare it with what
     # we expected, displaying a warning if it wasn't what was expected
 
     if test $maybechanged -ne 0 && ! cmp -s $page $work_dst_file; then
@@ -220,7 +220,7 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
         made_matches=$(diff -U 0 $page $work_dst_file | grep '^\+[^+]' | \
 		wc -l | awk '{print $1}')
 
-	# The following line makes the changes -- comment it out if you 
+	# The following line makes the changes -- comment it out if you
         # just want to do a dry run to see what changes would be made.
 
 	if test $really_do_it -ne 0; then
@@ -242,8 +242,8 @@ for page in $(wc "$@" 2> /dev/null | awk '$1 > 1 {print $4}'| \
         echo "%%%%%%%%%% WARNING: NOT ENOUGH MATCHES: " \
 	    "$made_matches < $min_match"
     fi
-    
-done 
+
+done
 
 # clean up
 

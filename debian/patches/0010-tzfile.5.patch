@@ -2,16 +2,21 @@ From: "Dr. Tobias Quathamer" <toddy@debian.org>
 Date: Sat, 6 Feb 2016 01:25:30 +0100
 Subject: tzfile.5
 
----
- man5/tzfile.5 | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Add missing manpage section to timezone(3).
 
-diff --git a/man5/tzfile.5 b/man5/tzfile.5
-index 48f6cad..dbed77c 100644
---- a/man5/tzfile.5
-+++ b/man5/tzfile.5
-@@ -184,6 +184,22 @@ if either
- .I tzh_timecnt
+Reported-by: Helge Kreutzmann <debian@helgefjell.de>
+Reported-by: Alejandro Colomar <alx@kernel.org>
+Suggested-by: Alejandro Colomar <alx@kernel.org>
+---
+ man/man5/tzfile.5 | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/man/man5/tzfile.5 b/man/man5/tzfile.5
+index 4aa3f6c..b16219e 100644
+--- a/man/man5/tzfile.5
++++ b/man/man5/tzfile.5
+@@ -210,6 +210,24 @@ if either
+ .B tzh_timecnt
  is zero or the time argument is less than the first transition time recorded
  in the file.
 +.\" http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=122906#47
@@ -21,15 +26,17 @@ index 48f6cad..dbed77c 100644
 +.I <tzfile.h>
 +in the glibc source archive, see
 +.IR timezone/tzfile.h .
-+
-+It seems that timezone uses
++.PP
++It seems that
++.BR timezone (3)
++uses
 +.B tzfile
 +internally, but glibc refuses to expose it to userspace.  This is most
 +likely because the standardised functions are more useful and
 +portable, and actually documented by glibc.  It may only be in glibc
 +just to support the non-glibc-maintained timezone data (which is
 +maintained by some other entity).
-+.\" End of patch 
++.\" End of patch
  .SS Version 2 format
  For version-2-format timezone files,
  the above header and data are followed by a second header and data,

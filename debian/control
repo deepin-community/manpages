@@ -1,20 +1,28 @@
 Source: manpages
 Section: doc
 Maintainer: Dr. Tobias Quathamer <toddy@debian.org>
+Uploaders: Marcos Fouces <marcos@debian.org>,
 Priority: standard
-Build-Depends: debhelper-compat (= 12)
-Standards-Version: 4.5.0
+Build-Depends: debhelper-compat (= 13),
+               groff (>= 1.23.0),
+               mandoc,
+Standards-Version: 4.7.0
 Vcs-Browser: https://salsa.debian.org/debian/manpages
 Vcs-Git: https://salsa.debian.org/debian/manpages.git
 Homepage: https://www.kernel.org/doc/man-pages/
+Rules-Requires-Root: no
 
 Package: manpages
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}
-Suggests: man-browser
-Replaces: manpages-dev (<< 5.09-2), attr (<< 1:2.4.47-3), keyutils (<< 1.6-1)
-Breaks: manpages-dev (<< 5.09-2), attr (<< 1:2.4.47-3), keyutils (<< 1.6-1)
+Depends: ${misc:Depends},
+Suggests: man-browser,
+Replaces: initscripts (<< 3.0.0-1),
+          inn2-dev (<< 2.6.5-1),
+          manpages-dev (<< 5.09-2),
+Breaks: initscripts (<< 3.0.0-1),
+        inn2-dev (<< 2.6.5-1),
+        manpages-dev (<< 5.09-2),
 Description: Manual pages about using a GNU/Linux system
  This package contains GNU/Linux manual pages for these sections:
   4 = Devices (e.g. hd, sd).
@@ -23,20 +31,23 @@ Description: Manual pages about using a GNU/Linux system
   7 = Conventions and standards, macro packages, etc.
       (e.g. nroff, ascii).
  .
- Sections 1, 6 and 8 are provided by the respective applications. This
- package only includes the intro man page describing the section.
+ Beside the intro man page describing the section, a few manual
+ pages from sections 1,6 and 8 are also provided.
  .
  The man pages describe syntaxes of several system files.
 
 Package: manpages-dev
 Architecture: all
 Multi-Arch: foreign
-Depends: manpages, ${misc:Depends}
-Suggests: man-browser
-Replaces: libbsd-dev (<< 0.8.4-1),
- libattr1-dev (<< 1:2.4.47-3)
-Breaks: manpages (<< 5.09-2), libbsd-dev (<< 0.8.4-1),
- libattr1-dev (<< 1:2.4.47-3)
+Depends: manpages,
+         ${misc:Depends},
+Suggests: man-browser,
+Replaces: glibc-doc (<< 2.37-16),
+          inn2-dev (<< 2.7.0-1),
+          manpages (<< 6.7-1),
+Breaks: glibc-doc (<< 2.37-16),
+        inn2-dev (<< 2.7.0-1),
+        manpages (<< 6.7-1),
 Priority: optional
 Description: Manual pages about using GNU/Linux for development
  These man pages describe the Linux programming interface, including

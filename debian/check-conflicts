@@ -1,14 +1,12 @@
 #!/bin/sh
 
-echo "Getting the contents file from sid for amd64 ..."
+echo "Getting the contents files from sid for amd64 and all ..."
 wget --quiet https://deb.debian.org/debian/dists/sid/main/Contents-amd64.gz
-
-echo "Decompressing the contents file ..."
-gzip -d Contents-amd64.gz
+wget --quiet https://deb.debian.org/debian/dists/sid/main/Contents-all.gz
 
 echo "Filtering out only manpages ..."
-grep "^usr/share/man/man*" Contents-amd64 > only-manpages.txt
-rm -f Contents-amd64
+gzip -dc Contents-amd64.gz Contents-all.gz | grep "^usr/share/man/man*" > only-manpages.txt
+rm -f Contents-amd64.gz Contents-all.gz
 
 echo "Searching for conflicting manpages ..."
 for manpage in man*/* ; do

@@ -3,14 +3,14 @@ Date: Sat, 6 Feb 2016 01:20:55 +0100
 Subject: getpwnam.3
 
 ---
- man3/getpwnam.3 | 9 +++++++++
+ man/man3/getpwnam.3 | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/man3/getpwnam.3 b/man3/getpwnam.3
-index 4212e66..9c531e6 100644
---- a/man3/getpwnam.3
-+++ b/man3/getpwnam.3
-@@ -207,10 +207,18 @@ structure.
+diff --git a/man/man3/getpwnam.3 b/man/man3/getpwnam.3
+index 980afd2..0bcfc6c 100644
+--- a/man/man3/getpwnam.3
++++ b/man/man3/getpwnam.3
+@@ -194,10 +194,18 @@ structure.
  .TP
  .B ERANGE
  Insufficient buffer space supplied.
@@ -29,11 +29,9 @@ index 4212e66..9c531e6 100644
  .SH ATTRIBUTES
  For an explanation of the terms used in this section, see
  .BR attributes (7).
-@@ -338,6 +346,7 @@ main(int argc, char *argv[])
+@@ -347,4 +355,5 @@ main(int argc, char *argv[])
  .BR getspnam (3),
  .BR putpwent (3),
  .BR setpwent (3),
 +.BR nsswitch.conf (5),
  .BR passwd (5)
- .SH COLOPHON
- This page is part of release 5.10 of the Linux

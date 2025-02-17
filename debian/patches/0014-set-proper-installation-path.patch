@@ -1,0 +1,22 @@
+From: Marcos Fouces <marcos@debian.org>
+Date: Thu, 12 May 2022 00:06:17 +0200
+Subject: change installation path in the Makefile.
+
+Forwarded: not-needed
+---
+ share/mk/configure/directory_variables/install.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/share/mk/configure/directory_variables/install.mk b/share/mk/configure/directory_variables/install.mk
+index cd5fda6..15cebe8 100644
+--- a/share/mk/configure/directory_variables/install.mk
++++ b/share/mk/configure/directory_variables/install.mk
+@@ -10,7 +10,7 @@ include $(MAKEFILEDIR)/configure/directory_variables/src.mk
+ 
+ 
+ DESTDIR     :=
+-prefix      := /usr/local
++prefix      := /usr
+ datarootdir := $(prefix)/share
+ mandir      := $(datarootdir)/man
+ docdir      := $(datarootdir)/doc

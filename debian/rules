@@ -1,9 +1,14 @@
 #! /usr/bin/make -f
-
+export LC_ALL=C.UTF-8
 %:
 	dh $@
 
 override_dh_auto_configure:
+	# adjust non-standard subsection dir names to FHS:
+	#sed -i 's/\.so man3type/\.so man3/g' man[3,7]*/*
+	#sed -i 's/\.so man3const/\.so man3/g' man3*/*
+	#sed -i 's/\.so man3head/\.so man3/g' man3*/*
+
 override_dh_auto_build:
 # Nothing to be done here, we're using a custom installation.
 
@@ -11,9 +16,11 @@ override_dh_installchangelogs:
 	dh_installchangelogs Changes
 
 override_dh_installman:
+	mv debian/tmp/usr/share/man/man5/proc_config.gz.5 debian/tmp/usr/share/man/man5/proc_config_gz.5
+	dh_installman --language=C
+	mv debian/manpages/usr/share/man/man5/proc_config_gz.5 debian/manpages/usr/share/man/man5/proc_config.gz.5
 	# Prevent broken symlinks, see https://bugs.debian.org/876047
 	sh debian/move_links_to_correct_package
-	dh_installman
 	# Remove intro.{2,3} manpages from manpages-dev,
 	# they are included in manpages
 	rm -f debian/manpages-dev/usr/share/man/man2/intro.2
@@ -24,15 +31,10 @@ override_dh_installman:
 	rm -f debian/manpages/usr/share/man/man1/time.1
 	rm -f debian/manpages-dev/usr/share/man/man3/crypt.3
 	rm -f debian/manpages-dev/usr/share/man/man3/crypt_r.3
-	rm -f debian/manpages-dev/usr/share/man/man3/list.3
-	rm -f debian/manpages-dev/usr/share/man/man3/pthread_atfork.3
-	rm -f debian/manpages-dev/usr/share/man/man3/pthread_mutexattr_destroy.3
-	rm -f debian/manpages-dev/usr/share/man/man3/pthread_mutexattr_init.3
 	rm -f debian/manpages/usr/share/man/man4/fd.4
 	rm -f debian/manpages/usr/share/man/man5/ftpusers.5
 	rm -f debian/manpages/usr/share/man/man5/nscd.conf.5
 	rm -f debian/manpages/usr/share/man/man5/passwd.5
-	rm -f debian/manpages/usr/share/man/man5/tmpfs.5
 	rm -f debian/manpages/usr/share/man/man8/nscd.8
 	# End of automatically added files by debian/check-conflicts
 

@@ -1,0 +1,24 @@
+From: Marcos Fouces <marcos@debian.org>
+Date: Fri, 21 Jun 2024 16:19:35 +0200
+Subject: use a more robust approach to limit manpages installation to
+ FHS-compliant directories. Thanks to Alejandro Colomar (upstream author).
+
+---
+ share/mk/configure/directory_variables/install.mk | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/share/mk/configure/directory_variables/install.mk b/share/mk/configure/directory_variables/install.mk
+index 15cebe8..909bbe2 100644
+--- a/share/mk/configure/directory_variables/install.mk
++++ b/share/mk/configure/directory_variables/install.mk
+@@ -23,5 +23,10 @@ $(foreach s, $(MANSECTIONS),                                                  \
+ $(foreach s, $(MANSECTIONS),                                                  \
+ 	$(eval man$(s)ext := .$(s)))
+ 
++man2constdir := $(man2dir)
++man2typedir  := $(man2dir)
++man3constdir := $(man3dir)
++man3headdir  := $(man3dir)
++man3typedir  := $(man3dir)
+ 
+ endif  # include guard

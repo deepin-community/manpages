@@ -3,19 +3,19 @@ Date: Sat, 6 Feb 2016 01:25:17 +0100
 Subject: resolv.conf.5
 
 ---
- man5/resolv.conf.5 | 2 ++
+ man/man5/resolv.conf.5 | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/man5/resolv.conf.5 b/man5/resolv.conf.5
-index b64b053..c8d5bd0 100644
---- a/man5/resolv.conf.5
-+++ b/man5/resolv.conf.5
-@@ -224,6 +224,8 @@ this option is deprecated; applications should use
+diff --git a/man/man5/resolv.conf.5 b/man/man5/resolv.conf.5
+index 0f726a9..4ddb3c3 100644
+--- a/man/man5/resolv.conf.5
++++ b/man/man5/resolv.conf.5
+@@ -249,6 +249,8 @@ this option is deprecated; applications should use
  .BR getaddrinfo (3),
  rather than
  .BR gethostbyname (3).
-+
++.PP
 +Some programs behave strangely when this option is turned on.
  .TP
- .BR ip6\-bytestring " (since glibc 2.3.4 to 2.24)"
+ .BR ip6\-bytestring " (since glibc 2.3.4 to glibc 2.24)"
  Sets

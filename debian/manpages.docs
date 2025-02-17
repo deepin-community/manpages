@@ -1,4 +1,3 @@
-*.Announce
 Changes.old
-debian/man-addons.el
 debian/POSIX-MANPAGES
+debian/man-addons.el

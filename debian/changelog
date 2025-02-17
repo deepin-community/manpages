@@ -1,3 +1,232 @@
+manpages (6.9.1-1) unstable; urgency=medium
+
+  * New upstream version 6.9.1
+    - Refresh patches
+  * Update d/copyright
+  * Update d/move_links_to_correct_package
+  * Clean up list of known files
+  * motd.5: Add missing full stop in Debian patch.
+  * tzfile.5: Add missing manpage section to timezone(3).
+  * Update patch to include man2constdir
+  * Update lintian overrides for manpages and manpages-dev
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Mon, 18 Nov 2024 11:17:43 +0100
+
+manpages (6.8-2) unstable; urgency=medium
+
+  * Remove packages from Build-Depends to allow migration to testing.
+    There's no clear explanation in d/changelog or the commit
+    messages as to why all those packages should be needed.
+    However, it hinders testing migration (currently due to the
+    dependency on iwyu).
+  * Use wrap-and-sort -at
+  * Add missing Breaks and Replaces glibc-doc (<< 2.37-16) for manpages-dev.
+    Thanks to Andreas Beckmann <anbe@debian.org> (Closes: #1072158)
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Fri, 07 Jun 2024 23:16:21 +0200
+
+manpages (6.8-1) unstable; urgency=medium
+
+  * New upstream version 6.8.
+  * Refresh patches.
+  * Move new manpage links to correct package.
+  * Adjust path in d/update_copyright
+  * Update copyright file.
+  * d/rules: update conflicting manpages list to remove.
+  * Use a more robust approach to limit manpages installation to
+    FHS-compliant directories (Thanks to upstream author: Alx)
+  * Bump to Standards-Version 4.7.0 (no changes required).
+
+ -- Marcos Fouces <marcos@debian.org>  Wed, 22 May 2024 22:16:44 +0200
+
+manpages (6.7-2) unstable; urgency=medium
+
+  [ Marcos Fouces ]
+  * Add breaks/replace in manpage-dev (Thanks to Andreas Beckman).
+
+  [ Sven Joachim ]
+  * d/check-conflicts: avoid large temporary file
+  * d/check-conflicts: also check for manpages in arch:all packages
+  * Update d/rules with check-conflicts script (Closes: #1068166)
+
+ -- Marcos Fouces <marcos@debian.org>  Tue, 02 Apr 2024 18:20:34 +0200
+
+manpages (6.7-1) unstable; urgency=medium
+
+  * New upstream version 6.7
+  * Remove exceptions in d/rules.
+  * Refresh patches.
+  * Add workaround for proc_config.gz.5 installation as
+    dh_installman believes that is a compressed file.
+  * Add to d/move_links_to_correct_package:
+    ~ man7/sigevent.7
+  * Fix links also in section 7 manpages.
+  * Add missing GPL-3 license.
+  * Update d/copyright.
+  * Remove unused Lintian overrides.
+  * Add cpplint,cppcheck and lzip to Build-Depends (needed for tests).
+  * Export needed locale in d/rules (LC_ALL=C.UTF-8).
+
+ -- Marcos Fouces <marcos@debian.org>  Sun, 31 Mar 2024 22:57:48 +0200
+
+manpages (6.05.01-1) unstable; urgency=medium
+
+  [ Alejandro Colomar ]
+  * New upstream version 6.05.01 (Closes: #1059353)
+    - Refresh patches
+    - Update dh_auto_test for new upstream make 'check' target
+    - Add Build-Depends on groff (>= 1.23.0) and mandoc for new upstream
+      make 'lint-man' target
+    - Update d/copyright
+
+  [ Dr. Tobias Quathamer ]
+  * Reformat d/update-copyright script with python formatter 'black'
+    and update for new upstream licenses
+  * Add more files to skip due to failing tests
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Sat, 23 Dec 2023 16:36:23 +0100
+
+manpages (6.03-2) unstable; urgency=medium
+
+  * Add Breaks/Replaces for inn2-dev (<< 2.7.0-1).
+    Thanks to Helge Kreutzmann <debian@helgefjell.de> (Closes: #1034958)
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Sun, 30 Apr 2023 12:42:06 +0200
+
+manpages (6.03-1) unstable; urgency=medium
+
+  * New upstream version 6.03
+  * Refresh patches.
+  * d/rules & d/move_links_to_correct_package: add support for
+    link handling in man3head directory.
+  * Update d/copyright.
+
+ -- Marcos Fouces <marcos@debian.org>  Wed, 15 Feb 2023 17:45:03 +0100
+
+manpages (6.02-1) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * debian/copyright: use spaces rather than tabs to start continuation lines.
+  * Remove constraints unnecessary since buster (oldstable):
+    + manpages: Drop versioned constraint on attr and keyutils in Replaces.
+    + manpages: Drop versioned constraint on attr and keyutils in Breaks.
+    + manpages-dev: Drop versioned constraint on libattr1-dev and libbsd-dev in
+      Replaces.
+    + manpages-dev: Drop versioned constraint on libattr1-dev and libbsd-dev in
+      Breaks.
+
+  [ Penn ]
+  * Changed man-browser from suggested to recommended
+
+  [ Marcos Fouces ]
+  * New upstream version 6.02
+  * Refresh patches for new upstream release.
+  * d/manpages.doc: remove *.Announce files installation as they no
+    longer exist.
+  * d/rules & d/move_links_to_correct_package: add support for
+    link handling in man3const directory.
+  * d/move_links_to_correct_package:
+    ~ Add stpecpy.3.
+    ~ Add stpecpyx.3
+    ~ Add ustpcpy.3
+    ~ Add ustr2stp.3
+    ~ Add zustr2stp.3
+    ~ Add zustr2ustp.3
+  * d/manpages(-dev)?.lintian-overrides
+    ~ Fix mismatched overrides by fixing line numbering of
+      occurrences.
+  * d/copyright: update running d/update-copyright.
+  * d/README.Debian: all its content is redundant, obsolete
+    or inaccurate so it is better to remove it.
+  * d/README.Upstream: redirect users to canonical source of information
+    on how to contribute to the man-pages project.
+  * Bump to Standards-Version 4.6.2 (no changes required).
+  * Fix manpages package description in d/control (Closes: #1023218).
+
+ -- Marcos Fouces <marcos@debian.org>  Wed, 28 Dec 2022 18:04:08 +0100
+
+manpages (6.01-1) unstable; urgency=medium
+
+  * New upstream version 6.01
+  * man*/*
+    ~ Fix groff warning in glob.7.
+  * d/POSIX-MANPAGES:
+    ~ Update posix manual pages packaging history in
+      d/POSIX-MANPAGES (Closes: #1016415).
+  *d/patches/*:
+    ~  Refresh patches for new upstream release.
+  * d/manpages(-dev)?.manpages:
+    ~ Rename from install files (*.install => *.manpages).
+    ~ Add new non-FHS dirs to manpages-dev.install: man3type,
+      man2type, man3head and man3const.
+  * d/rules:
+    ~ Run dh_installman before testing for broken links.
+    ~ Define --language=C option in dh_installman to avoid *.so
+      suffix being interpreted as a translation.
+    ~ Change destination of links pointing to non-FHS dirs
+      i.e. .so man3type/*.3type => .so man3/*.3type.
+  * d/move_links_to_correct_package:
+    ~ Update list of known files.
+    ~ Handle non-FHS directories and manual pages extensions.
+  * d/control:
+      because FILE.3 is no longer a link to SYSTEM_DATA_TYPES.7
+      and is not moved to manpages package.
+    ~ Update descriptions to reflect the fact that manpages
+      package also includes manual pages from
+  * d/LICENSES/*. Add missing licenses used in this package:
+    ~ GPL-1+
+    ~ BSD-2-clause
+    ~ Linux-man-pages-copyleft
+  * d/update-copyright:
+    ~ Search for "SPDX-License-Identifier: " string instead of
+      the previous "%%%LICENSE_START" to check the manual pages
+      license.
+    ~ Add missing licenses and their upstream names.
+    ~ Handle manual pages on non-FHS directories.
+  * d/copyright:
+    ~ Automatic update running d/update-copyright python script.
+    ~ Minor manual tweaks.
+  * d/manpages(-dev)?.lintian-overrides
+    ~ Fix mismatched overrides by fixing line numbering of
+      occurrences.
+
+ -- Marcos Fouces <marcos@debian.org>  Fri, 21 Oct 2022 22:55:41 +0200
+
+manpages (5.13-1) unstable; urgency=medium
+
+  [ Dr. Tobias Quathamer ]
+  * Add new Debian and upstream branch names to gbp.conf
+  * Refresh patches
+  * Update d/copyright
+  * Add Marcos as comaintainer. Welcome!
+
+  [ Marcos Fouces ]
+  * New upstream version 5.13 (Closes: #981171)
+  * Refresh patches.
+  * d/debian/move_links_to_correct_package:
+    ~ Add blkcnt_t.3
+    ~ Add blksize_t.3
+    ~ Add cc_t.3
+    ~ Add mode_t.3
+    ~ Add sockaddr.3
+    ~ Add socklen_t.3
+    ~ Add off64_t.3
+  * Set proper installation path.
+  * Bump to debhelper-compat 13.
+  * Reinstall file.3 as it is no longer conflicts with newer release
+    of inn2-dev.
+  * Remove upstream signing key. It is used to sign a list of SHA256
+    checksums that isn't compatible with uscan.
+  * Update d/copyright file.
+  * Rename Lintian tag in override file:
+    spelling-error-in-manpage => typo-in-manual-page
+  * Bump Standards-Version to 4.6.1 (no changes required).
+  * Add Rules-Requires-Root:no stanza in d/control.
+  * Don't remove tmpfs.5 man page as it no longer conflicts with
+    newer initscripts releases. (Closes: #951598).
+
+ -- Marcos Fouces <marcos@debian.org>  Wed, 11 May 2022 23:19:00 +0200
+
 manpages (5.10-1) unstable; urgency=medium
 
   * New upstream version 5.10
