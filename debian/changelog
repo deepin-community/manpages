@@ -1,3 +1,11 @@
+manpages (6.9.1-1deepin2) unstable; urgency=medium
+
+  * Add new patch 0018-man-man2-mkdir.2-add-missing.TP.patch
+    - Link: https://lore.kernel.org/linux-man/acnm342pailsiqqrelvaugpaupuceks5hvtvapejydxkig627b@acdnbxarcmro/T/#m2c7b3fc1c98ff3da9a7b6cbfb7f57916148bd87b
+    - Reason: It is authored by Chen Linxuan <chenlinxuan@uniontech.com>
+
+ -- WangYuli <wangyuli@uniontech.com>  Mon, 3 Mar 2025 18:18:55 +0800
+
 manpages (6.9.1-1deepin1) unstable; urgency=medium
 
   * Add new patch 0017-man-man2-mkdir.2-ERRORS-Add-EOVERFLOW.patch
