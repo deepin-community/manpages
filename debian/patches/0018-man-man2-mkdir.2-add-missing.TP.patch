@@ -1,0 +1,27 @@
+From f96a882532f67b516afa89b6e8feb6064c4e344a Mon Sep 17 00:00:00 2001
+From: Chen Linxuan <chenlinxuan@uniontech.com>
+Date: Mon, 3 Mar 2025 17:50:57 +0800
+Subject: man/man2/mkdir.2: ffix
+
+Fixes: 2904e040ded2 (2025-02-02; "man/man2/mkdir.2: ERRORS: Add EOVERFLOW")
+Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
+Message-ID: <6DF9A4EE0A868FB4+20250303095057.92138-1-chenlinxuan@uniontech.com>
+Signed-off-by: Alejandro Colomar <alx@kernel.org>
+---
+ man/man2/mkdir.2 | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/man/man2/mkdir.2 b/man/man2/mkdir.2
+index 3c3fad6ee..20163c88e 100644
+--- a/man/man2/mkdir.2
++++ b/man/man2/mkdir.2
+@@ -203,6 +203,7 @@ does not support the creation of directories.
+ .B EROFS
+ .I pathname
+ refers to a file on a read-only filesystem.
++.TP
+ .B EOVERFLOW
+ UID or GID mappings (see
+ .BR user_namespaces (7))
+-- 
+cgit v1.2.3
