@@ -42,7 +42,7 @@ Multi-Arch: foreign
 Depends: manpages,
          ${misc:Depends},
 Suggests: man-browser,
-Replaces: glibc-doc (<< 2.37-16),
+Replaces: glibc-doc (<< 2.38-6deepin31),
           inn2-dev (<< 2.7.0-1),
           manpages (<< 6.7-1),
 Breaks: glibc-doc (<< 2.37-16),

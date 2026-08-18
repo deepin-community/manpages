@@ -1,3 +1,17 @@
+manpages (6.9.1-1deepin3) unstable; urgency=medium
+
+  * Bump Replaces for glibc-doc to (<< 2.38-6deepin31)
+    - deepin glibc-doc 2.38-6deepin* still ships pthread(3) man pages
+      (e.g. /usr/share/man/man3/pthread_atfork.3.gz), so the previous
+      Replaces: glibc-doc (<< 2.37-16) no longer covered the installed
+      glibc-doc version, and dpkg aborted with a file-overwrite error
+      when installing glibc-doc alongside manpages-dev.
+    - Breaks is intentionally left at glibc-doc (<< 2.37-16): covering
+      current glibc-doc versions there would make apt remove glibc-doc
+      whenever manpages-dev is upgraded.
+
+ -- lichenggang <lichenggang@uniontech.com>  Tue, 18 Aug 2026 10:50:10 +0800
+
 manpages (6.9.1-1deepin2) unstable; urgency=medium
 
   * Add new patch 0018-man-man2-mkdir.2-add-missing.TP.patch
